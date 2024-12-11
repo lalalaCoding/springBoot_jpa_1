@@ -9,12 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 public class Category {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "category_id")
     private Long id;
 
@@ -29,11 +27,17 @@ public class Category {
     private List<Item> items = new ArrayList<>();
 
     //자기 자신과 양방향 연관관계 설정 (시작)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
     private List<Category> child = new ArrayList<>();
     //자기 자신과 양방향 연관관계 설정 (끝)
+
+    //==연관관계 편의 메서드==//
+    public void addChildCategory(Category child) {
+        this.child.add(child);
+        child.setParent(this);
+    }
 }
