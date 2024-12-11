@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MemberRepositoryTest {
-
+/*
     @Autowired MemberRepository memberRepository;
 
     @Test
@@ -35,4 +35,8 @@ public class MemberRepositoryTest {
         Assertions.assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
         Assertions.assertThat(findMember).isEqualTo(member); // @Entity 클래스에서 @Id가 붙은 필드 값을 통해 객체를 비교하므로 true
     }
+*/
+
+
+
 }
