@@ -50,6 +50,51 @@ public class Order {
         delivery.setOrder(this);
     }
 
+    //==생성 메서드==//
+    //연관관계가 복잡하게 얽힌 엔티티는 별도의 생성 메서드를 만드는 것이 좋다.
+    //기존처럼 객체 생성 후, Setter로 값을 설정하는 것이 아니라, 객체 생성 시점에서 '주문'에 대한 응집된 비지니스 로직을 거쳐 객체를 생성하게 한다.
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        //OrderItem 을 먼저 생성하고 이 메서드를 호출하게 된다.
+        Order order = new Order();
+        order.setMember(member);
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem); //OrderItem 엔티티의 필드값도 같이 셋팅됨
+        }
+        order.setDelivery(delivery);
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    //==비지니스 로직==//
+    /*
+        주문 취소
+    */
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+
+        this.setStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : this.orderItems) { //this : 생략가능
+            orderItem.cancel(); //주문상품 엔티티에서 재고수량을 증가시키는 메서드 호출
+        }
+    }
+
+    //==조회 로직==//
+    /*
+        전체 주문 가격 조회
+    */
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (OrderItem orderItem : this.orderItems) {
+            totalPrice += orderItem.getTotalPrice(); //주문 상품 엔티티에 주문 수량과 주문 가격이 있기 때문에, 주문 엔티티에서 계산한다.
+        }
+
+        return totalPrice;
+        //return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum(); //위 코드를 Stream을 통해 간략화 가능함
+    }
+
 
 
 }
