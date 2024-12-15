@@ -9,13 +9,13 @@ public class Address {
 
     private String city;
     private String street;
-    private String zipCode;
+    private String zipcode;
 
     //JPA 스펙 상 기본 생성자는 강제로 명시해야 한다.
     protected Address() {}
 
     public Address(String zipCode, String street, String city) {
-        this.zipCode = zipCode;
+        this.zipcode = zipCode;
         this.street = street;
         this.city = city;
     }
