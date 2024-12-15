@@ -61,7 +61,7 @@ public class Order {
         Order order = new Order();
         order.setMember(member);
         for (OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem); //OrderItem 엔티티의 필드값도 같이 셋팅됨
+            order.addOrderItem(orderItem); //연관관계 편의 메서드: OrderItem 엔티티의 필드값도 같이 셋팅됨
         }
         order.setDelivery(delivery);
         order.setStatus(OrderStatus.ORDER);

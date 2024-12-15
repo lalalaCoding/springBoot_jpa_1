@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OrderServiceTest {
 
-    @PersistenceContext EntityManager em;
+    @Autowired EntityManager em;
     @Autowired OrderService orderService;
     @Autowired OrderRepository orderRepository;
 
