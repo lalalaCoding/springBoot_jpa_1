@@ -1,16 +1,17 @@
 package jpabook.jpashop.controller;
 
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.item.Item;
+import jpabook.jpashop.repository.OrderRepository;
+import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.service.ItemService;
 import jpabook.jpashop.service.MemberService;
 import jpabook.jpashop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class OrderController {
     private final OrderService orderService;
     private final MemberService memberService; //고객 선택 기능
     private final ItemService itemService; //상품 선택 기능
+    private final OrderRepository orderRepository;
 
     @GetMapping("/order")
     public String createForm(Model model) {
@@ -43,4 +45,19 @@ public class OrderController {
         orderService.order(memberId, itemId, count);
         return "redirect:/orders";
     }
+
+    @GetMapping("/orders") //주문 목록 조회와 검색
+    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
+        List<Order> orders = orderService.findOrders(orderSearch);
+        model.addAttribute("orders", orders);
+        //model.addAttribute("orderSearch", orderSearch); @ModelAttribute를 사용했기 때문에 Model에 자동으로 저장됨
+        return "order/orderList";
+    }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/orders";
+    }
+
 }
