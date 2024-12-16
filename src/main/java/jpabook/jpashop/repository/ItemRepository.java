@@ -17,7 +17,7 @@ public class ItemRepository {
         if (item.getId() == null) { // 신규로 생성한 Item 객체인 경우 (영속성 컨텍스트에 동일한 Item 객체가 없음) -> 등록 해야함.
             em.persist(item);
         } else { //DB에 등록된 Item 객체가 영속성 컨텍스트에 들어있는 경우 -> 수정 해야함.
-            em.merge(item); // 추후 설명
+            em.merge(item); //준영속 상태의 엔티티 -> 양속 상태의 엔티티로 변경
         }
     }
 
