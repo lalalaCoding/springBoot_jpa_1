@@ -13,9 +13,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringRunner.class) //스프링과 JUnit 테스트를 통합하는 어노테이션 -> JUnit 5에서는 @SpringBootTest에 이미 내장되어 있음
-@SpringBootTest //스프링 부트를 띄운 상태로 테스트 환경 작동
-@Transactional //테스트에서의 @Transactional은 Commit을 하지 않고 Rollback을 함
+
 /*
     플러시? : 영속성 컨텍스트에 있는 변경이나 등록 내용을 DB에 반영하는 것
     데이터베이스 트랜젝션이 commit 되는 순간에 플러시가 되면서 JPA 영속성 컨텍스트에 있는 멤버 객체가 insert문으로 작성되어, DB에 저장된다.
@@ -23,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
     @Rollback(false) : @Transactional이 항상 Commit 하도록 실행
     em.flush() : 플러시 실행
 */
+@RunWith(SpringRunner.class) //스프링과 JUnit 테스트를 통합하는 어노테이션 -> JUnit 5에서는 @SpringBootTest에 이미 내장되어 있음
+@SpringBootTest //스프링 부트를 띄운 상태로 테스트 환경 작동
+@Transactional //테스트에서의 @Transactional은 Commit을 하지 않고 Rollback을 함
 public class MemberServiceTest {
 
     @Autowired MemberService memberService;
@@ -32,7 +33,7 @@ public class MemberServiceTest {
     @Autowired EntityManager em;
 
     @Test
-    //@Rollback(false)
+//    @Rollback(false)
     public void 회원가입() throws Exception {
         //given
         Member member = new Member();
@@ -61,6 +62,6 @@ public class MemberServiceTest {
         memberService.join(member2); //예외가 발생해야 한다!!
 
         //then
-        Assert.fail("예외가 발생해야 한다.");
+        Assert.fail("예외가 발생해야 한다."); //예외가 발생하지 않았을 때 현재 라인의 코드가 실행됨
     }
 }

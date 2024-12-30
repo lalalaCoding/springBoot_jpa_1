@@ -21,7 +21,7 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY) //Order 엔티티 : Member 엔티티 = 다 : 1
-    @JoinColumn(name="member_id")
+    @JoinColumn(name="member_id") //테이블과 매핑할 FK 지정
     private Member member; //주문 회원
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

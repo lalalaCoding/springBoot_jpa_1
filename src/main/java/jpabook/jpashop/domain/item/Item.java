@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) //상속관계 일 때는, 부모쪽에서 전략을 설정해주어야 한다.
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) //상속관계 -> 부모쪽에서 테이블 구현 전략을 설정
 @DiscriminatorColumn(name= "dtype") //싱글 테이블이기 때문에 구분 컬럼을 지정
 @Getter @Setter
 public abstract class Item {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "item_id")
     private Long id;
 

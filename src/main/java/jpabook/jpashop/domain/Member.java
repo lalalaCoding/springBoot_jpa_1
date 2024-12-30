@@ -18,9 +18,9 @@ public class Member {
 
     private String name;
 
-    @Embedded //내장 타입 사용 어노테이션
+    @Embedded //내장 타입 명시 어노테이션
     private Address address;
 
-    @OneToMany(mappedBy = "member") //Member 엔티티 : Order 엔티티 = 1 : 다, 연관관계의 주인이 아닌 거울로 지정
+    @OneToMany(mappedBy = "member") //Member 엔티티 : Order 엔티티 = 1 : 다, 연관관계의 주인이 아니므로 거울로 지정
     private List<Order> orders = new ArrayList<>();
 }

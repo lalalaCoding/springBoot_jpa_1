@@ -24,8 +24,8 @@ public class OrderItem {
     @JoinColumn(name="order_id")
     private Order order; //주문
     
-    private int orderPrice; //주문 가격
-    private int count; //주문 수량
+    private int orderPrice; //주문 당시의 가격
+    private int count; //주문 당시의 수량
 
     //==생성 메서드==//
     //주문 가격 : Item 엔티티의 가격과 주문 가격은 쿠폰 등으로 인해 달라질 수 있기 때문에 별도의 매개변수로 전달받는것이 좋다.

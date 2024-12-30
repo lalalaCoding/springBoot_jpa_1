@@ -17,7 +17,7 @@ public class MemberService {
     //final : 컴파일 시점에서 주입이 잘 되었는지 확인 가능하므로 사용 권장
     private final MemberRepository memberRepository;
 
-    //회원 가입
+    //== 회원 가입 ==//
     @Transactional //JPA에서 데이터 변경은 무조건 @Transactional 안에서 수행되어야 함(원칙)
     public Long join(Member member) {
         validateDuplicateMember(member); //중복 회원 검증(비지니스 로직)
@@ -25,6 +25,7 @@ public class MemberService {
         return member.getId();
     }
 
+    //== 이름 중복 검사 ==//
     private void validateDuplicateMember(Member member) {
         //EXCEPTION
         List<Member> findMembers = memberRepository.findByName(member.getName());
@@ -38,6 +39,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    //회원 단건 조회
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
     }
