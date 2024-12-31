@@ -21,7 +21,7 @@ public class MemberController {
 
     @GetMapping("/members/new")
     public String createForm(Model model) {
-        model.addAttribute("memberForm", new MemberForm()); // validation을 위하 빈 객체라도 들고 뷰로 이동하겠음
+        model.addAttribute("memberForm", new MemberForm()); // validation을 위해 빈 객체라도 들고 뷰로 이동하겠음
         return "members/createMemberForm";
     }
 
@@ -29,6 +29,7 @@ public class MemberController {
     public String create(@Valid MemberForm form, BindingResult result) {
         //@Valid : 객체에서 @NotEmpty와 같은 어노테이션을 검증해준다.
         //MemberForm에 대한 validation이 실패했을 때 발생하는 에러가 result에 바인딩된다.
+        System.out.println("result = " + result.getObjectName());
         if (result.hasErrors()) {
             //스프링은 자동으로 BindingResult를 뷰로 전달해준다.
             return "members/createMemberForm";
@@ -36,7 +37,7 @@ public class MemberController {
 
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
-        Member member = new Member();
+        Member member = new Member(); //엔티티 객체 생성 후 속성 값 셋팅
         member.setName(form.getName());
         member.setAddress(address);
 

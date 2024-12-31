@@ -55,7 +55,7 @@ public class Order {
 
     //==생성 메서드==//
     //연관관계가 복잡하게 얽힌 엔티티는 별도의 생성 메서드를 만드는 것이 좋다.
-    //기존처럼 객체 생성 후, Setter로 값을 설정하는 것이 아니라, 객체 생성 시점에서 '주문'에 대한 응집된 비지니스 로직을 거쳐 객체를 생성하게 한다.
+    //기존처럼 객체 생성 후, Setter로 값을 설정하는 것이 아니라, 엔티티 생성 시점에서 '주문'에 대한 응집된 비지니스 로직을 거쳐 객체를 생성하게 한다.
     public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
         //OrderItem 을 먼저 생성하고 이 메서드를 호출하게 된다.
         Order order = new Order();
@@ -64,23 +64,24 @@ public class Order {
             order.addOrderItem(orderItem); //연관관계 편의 메서드: OrderItem 엔티티의 필드값도 같이 셋팅됨
         }
         order.setDelivery(delivery);
-        order.setStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
+        order.setStatus(OrderStatus.ORDER);
         return order;
     }
 
     //==비지니스 로직==//
     /*
-        주문 취소
+        주문 취소: order.cancel()
     */
     public void cancel() {
-        if (delivery.getStatus() == DeliveryStatus.COMP) {
+        if (this.delivery.getStatus() == DeliveryStatus.COMP) {
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
         }
 
-        this.setStatus(OrderStatus.CANCEL);
+        this.setStatus(OrderStatus.CANCEL); //order 엔티티의 status 속성 값 변경
+        
         for (OrderItem orderItem : this.orderItems) { //this : 생략가능
-            orderItem.cancel(); //주문상품 엔티티에서 재고수량을 증가시키는 메서드 호출
+            orderItem.cancel(); //주문 상품 엔티티에서 재고수량을 증가시키는 메서드 호출
         }
     }
 
@@ -90,6 +91,7 @@ public class Order {
     */
     public int getTotalPrice() {
         int totalPrice = 0;
+
         for (OrderItem orderItem : this.orderItems) {
             totalPrice += orderItem.getTotalPrice(); //주문 상품 엔티티에 주문 수량과 주문 가격이 있기 때문에, 주문 엔티티에서 계산한다.
         }
